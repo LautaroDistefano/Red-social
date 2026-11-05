@@ -11,8 +11,8 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 1.5rem 1rem;
-    background: var(--marron);
-    color: var(--crema);
+    background: var(--aside-fondo);
+    color: var(--aside-texto);
     border-radius: 0 var(--radio) var(--radio) 0;
     box-shadow: var(--sombra);
 }
@@ -20,7 +20,7 @@
 .logo {
     margin: 0;
     padding: 0 0.5rem;
-    color: var(--crema);
+    color: var(--aside-texto);
     font-size: 1.5rem;
     font-weight: 800;
 }
@@ -30,25 +30,25 @@ nav {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-  flex: 1; /* empuja la sección de usuario hacia abajo */
+    flex: 1; /* empuja la sección de usuario hacia abajo */
 }
 
 nav a {
     display: block;
     padding: 0.75rem 1rem;
-    color: var(--crema);
+    color: var(--aside-texto);
     font-weight: 700;
     border-radius: var(--radio-chico);
     transition: background 0.2s;
 }
 
 nav a:hover {
-    background: var(--marron-suave);
+    background: var(--aside-hover);
     text-decoration: none;
 }
 
 nav a.activo {
-    background: var(--rojo);
+    background: var(--acento);
     color: #fff;
 }
 
@@ -58,13 +58,13 @@ nav a.activo {
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem;
-    background: rgba(255, 246, 232, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: var(--radio);
 }
 
 .usuario .avatar {
     flex-shrink: 0;
-    border-color: var(--crema);
+    border-color: var(--aside-texto);
 }
 
 .usuario-nombre {
@@ -78,13 +78,14 @@ nav a.activo {
 .btn-salir {
     width: 100%;
     background: transparent;
-    color: var(--crema);
-    border: 2px solid var(--crema-oscuro);
+    color: var(--aside-texto);
+    border: 2px solid var(--aside-hover);
 }
 
 .btn-salir:hover:not(:disabled) {
-    background: var(--rojo);
-    border-color: var(--rojo);
+    background: var(--acento);
+    border-color: var(--acento);
+    color: #fff;
 }
 
 /* ---------- Celular: barra inferior ---------- */

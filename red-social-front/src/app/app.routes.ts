@@ -8,7 +8,7 @@ import { MainLayout } from './layouts/main-layout/main-layout';
 // app.routes.ts
 export const routes: Routes = [
     { path: 'login', component: Login },
-    { path: 'registro', component: Registro },
+    { path: 'register', component: Registro },
     {
         path: '',
         component: MainLayout,
@@ -18,5 +18,5 @@ export const routes: Routes = [
         { path: '', redirectTo: 'publicaciones', pathMatch: 'full' },
         ],
     },
-    { path: '**', redirectTo: 'publicaciones' },
+    { path: '**', redirectTo: 'login' },
 ];
