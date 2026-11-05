@@ -1,0 +1,134 @@
+/* El host (<app-sidebar>) es el elemento que participa del grid */
+:host {
+    display: block;
+}
+
+.aside {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+    background: var(--marron);
+    color: var(--crema);
+    border-radius: 0 var(--radio) var(--radio) 0;
+    box-shadow: var(--sombra);
+}
+
+.logo {
+    margin: 0;
+    padding: 0 0.5rem;
+    color: var(--crema);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/* ---------- Links ---------- */
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  flex: 1; /* empuja la sección de usuario hacia abajo */
+}
+
+nav a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--crema);
+    font-weight: 700;
+    border-radius: var(--radio-chico);
+    transition: background 0.2s;
+}
+
+nav a:hover {
+    background: var(--marron-suave);
+    text-decoration: none;
+}
+
+nav a.activo {
+    background: var(--rojo);
+    color: #fff;
+}
+
+/* ---------- Usuario y cerrar sesión ---------- */
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 246, 232, 0.1);
+    border-radius: var(--radio);
+}
+
+.usuario .avatar {
+    flex-shrink: 0;
+    border-color: var(--crema);
+}
+
+.usuario-nombre {
+    font-weight: 700;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.btn-salir {
+    width: 100%;
+    background: transparent;
+    color: var(--crema);
+    border: 2px solid var(--crema-oscuro);
+}
+
+.btn-salir:hover:not(:disabled) {
+    background: var(--rojo);
+    border-color: var(--rojo);
+}
+
+/* ---------- Celular: barra inferior ---------- */
+@media (max-width: 768px) {
+.aside {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    height: auto;
+    z-index: 500;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--radio) var(--radio) 0 0;
+}
+
+.logo,
+.usuario-nombre {
+    display: none;
+}
+
+nav {
+    flex-direction: row;
+    justify-content: center;
+    flex: 1;
+}
+
+nav a {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+.usuario {
+    padding: 0;
+    background: none;
+}
+
+.btn-salir {
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+}

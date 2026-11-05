@@ -1,0 +1,23 @@
+.layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+.contenido {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* Celular: el aside pasa a barra inferior */
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .contenido {
+        padding: 1rem 1rem 6rem; /* espacio abajo para que la barra no tape el contenido */
+    }
+}
