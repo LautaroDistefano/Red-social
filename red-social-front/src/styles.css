@@ -1,1 +1,176 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --marron: #5b3a29;
+    --marron-suave: #8a5a44;
+    --crema: #fff6e8;
+    --crema-oscuro: #eadbc4;
+    --blanco: #fffdf9;
+    --rojo: #c8352e;
+    --rojo-oscuro: #a52a24;
+    --verde: #4f8a5b;
+    --texto: #3b2a22;
+
+    --radio: 16px;
+    --radio-chico: 12px;
+    --sombra: 0 4px 16px rgba(91, 58, 41, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--crema);
+    color: var(--texto);
+    line-height: 1.5;
+}
+
+h1, h2, h3 { color: var(--marron); margin-top: 0; }
+a { color: var(--rojo); font-weight: 700; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Botones ---------- */
+button, .btn {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.65rem 1.4rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--marron);
+    color: var(--crema);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+button:hover:not(:disabled), .btn:hover { background: var(--marron-suave); }
+button:active:not(:disabled) { transform: scale(0.97); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-rojo { background: var(--rojo); }
+.btn-rojo:hover:not(:disabled) { background: var(--rojo-oscuro); }
+
+.btn-borde {
+    background: transparent;
+    color: var(--marron);
+    border: 2px solid var(--crema-oscuro);
+}
+.btn-borde:hover:not(:disabled) { background: var(--crema-oscuro); }
+
+/* ---------- Formularios ---------- */
+.campo { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.campo label { font-weight: 700; font-size: 0.9rem; color: var(--marron); }
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+    background: var(--blanco);
+    color: var(--texto);
+    border: 2px solid var(--crema-oscuro);
+    border-radius: var(--radio-chico);
+}
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--rojo);
+}
+textarea { resize: vertical; }
+input[type='file'] { padding: 0.45rem; font-size: 0.9rem; }
+
+.error { color: var(--rojo); font-size: 0.8rem; font-weight: 600; }
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--blanco);
+    border: 2px solid var(--crema-oscuro);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 1.25rem;
+}
+
+/* ---------- Login y registro ---------- */
+.auth-contenedor {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--blanco);
+    border: 2px solid var(--crema-oscuro);
+    border-radius: 24px;
+    box-shadow: var(--sombra);
+    padding: 2rem;
+}
+.auth-card.ancha { max-width: 540px; }
+.auth-card h2 { text-align: center; margin-bottom: 0.25rem; }
+.fila { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.enlace { text-align: center; font-size: 0.9rem; margin: 0; }
+
+@media (max-width: 480px) {
+    .fila { grid-template-columns: 1fr; }
+}
+
+/* ---------- Modal ---------- */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: rgba(59, 42, 34, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+.modal {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 400px;
+    padding: 1.75rem;
+    border-radius: 24px;
+    text-align: center;
+    border-top: 8px solid var(--marron);
+    box-shadow: var(--sombra);
+}
+.modal.exito { border-top-color: var(--verde); }
+.modal.fallo { border-top-color: var(--rojo); }
+.modal button { margin-top: 1rem; }
+
+/* ---------- Layout con aside (para más adelante) ---------- */
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+.aside {
+    background: var(--marron);
+    color: var(--crema);
+    padding: 1.5rem 1rem;
+    border-radius: 0 var(--radio) var(--radio) 0;
+}
+.aside a {
+    display: block;
+    color: var(--crema);
+    padding: 0.7rem 1rem;
+    border-radius: var(--radio-chico);
+}
+.aside a:hover { background: var(--marron-suave); text-decoration: none; }
+.aside a.activo { background: var(--rojo); }
+.contenido { padding: 1.5rem; max-width: 760px; width: 100%; margin: 0 auto; }
+
+/* ---------- Detalles ---------- */
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--crema-oscuro);
+}
+.badge {
+    background: var(--rojo);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
