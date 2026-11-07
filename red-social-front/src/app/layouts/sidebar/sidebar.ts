@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TemaService } from '../../core/service/tema.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../core/service/authService';
 
 @Component({
   imports: [RouterLink],
@@ -10,4 +11,13 @@ import { RouterLink } from '@angular/router';
 })
 export class Sidebar {
   tema = inject(TemaService)
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  usuario = this.authService.usuarioActual();
+
+  cerrarSesion() {
+    this.authService.cerrarSesion();
+    this.router.navigate(['/login']);
+  }
 }

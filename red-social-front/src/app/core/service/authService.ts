@@ -7,6 +7,19 @@ export class AuthService {
     private http = inject(HttpClient);
     private url = 'http://localhost:3000/autenticacion';
 
+    usuarioActual() {
+    try {
+        const guardado = localStorage.getItem('usuario');
+        return guardado ? JSON.parse(guardado) : null;
+    } catch {
+        return null;
+    }
+    }
+
+    cerrarSesion() {
+    localStorage.removeItem('usuario');
+    }
+
     login(datos: { usuario: string; password: string }) {
         return this.http.post<any>(`${this.url}/login`, datos).pipe(
         tap((usuario) => localStorage.setItem('usuario', JSON.stringify(usuario)))

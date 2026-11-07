@@ -75,6 +75,19 @@ nav a.activo {
     white-space: nowrap;
 }
 
+.btn-tema {
+    width: 100%;
+    background: transparent;
+    color: var(--aside-texto);
+    border: 2px solid var(--aside-hover);
+}
+
+.btn-tema:hover:not(:disabled) {
+    background: var(--aside-hover);
+    color: #fff;
+}
+
+
 .btn-salir {
     width: 100%;
     background: transparent;
