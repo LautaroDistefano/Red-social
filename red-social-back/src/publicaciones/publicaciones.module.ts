@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { PublicacionesController } from './publicaciones.controller.js';
 import { PublicacionesService } from './publicaciones.service.js';
+import { Publicacion, PublicacionSchema } from './schema/publicacion.schema.js';
+import { UsuariosModule } from '../usuarios/usuarios.module.js';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Publicacion.name, schema: PublicacionSchema }]),
+    UsuariosModule,
+  ],
   controllers: [PublicacionesController],
-  providers: [PublicacionesService]
+  providers: [PublicacionesService],
 })
 export class PublicacionesModule {}
