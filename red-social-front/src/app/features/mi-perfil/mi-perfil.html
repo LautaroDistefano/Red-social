@@ -1,1 +1,57 @@
-<p>mi-perfil works!</p>
+<h2>Mi perfil</h2>
+
+@if (cargando()) {
+    <p class="estado">Cargando perfil...</p>
+} @else if (perfil(); as p) {
+    <section class="card datos">
+        <img class="foto" [src]="p.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+
+        <div class="info">
+        <h3>{{ p.nombre }} {{ p.apellido }}</h3>
+        <p class="usuario">&#64;{{ p.nombreUsuario }}</p>
+        @if (p.descripcion) {
+            <p class="descripcion">{{ p.descripcion }}</p>
+        }
+
+        <dl>
+            <dt>Correo</dt>
+            <dd>{{ p.correo }}</dd>
+            <dt>Fecha de nacimiento</dt>
+            <dd>{{ p.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+            <dt>Perfil</dt>
+            <dd><span class="badge">{{ p.perfil }}</span></dd>
+        </dl>
+        </div>
+    </section>
+
+    <h3 class="subtitulo">Mis últimas publicaciones</h3>
+
+    @if (publicaciones().length === 0) {
+        <p class="estado">Todavía no hiciste ninguna publicación.</p>
+    } @else {
+        <div class="lista">
+        @for (pub of publicaciones(); track pub._id) {
+            <app-publicacion-card
+            [publicacion]="pub"
+            [usuarioId]="sesion._id"
+            (alternarMeGusta)="alternarMeGusta($event)"
+            (eliminar)="pedirEliminar($event)" />
+        }
+        </div>
+    }
+}
+
+@if (modal(); as m) {
+    <div class="modal-fondo">
+        <div class="modal" [class.fallo]="!m.confirmar">
+        <h3>{{ m.titulo }}</h3>
+        <p>{{ m.mensaje }}</p>
+        @if (m.confirmar) {
+            <button type="button" class="btn-borde" (click)="cerrarModal()">Cancelar</button>
+            <button type="button" class="btn-rojo" (click)="confirmarModal()">Eliminar</button>
+        } @else {
+            <button type="button" (click)="cerrarModal()">Aceptar</button>
+        }
+        </div>
+    </div>
+}
