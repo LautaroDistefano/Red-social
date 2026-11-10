@@ -7,16 +7,17 @@ import { PublicacionesService } from './publicaciones.service.js';
 import { CrearPublicacionDto } from './dto/crear-publicacion.dto.js';
 import { UsuarioIdDto } from './dto/usuario-id.dto.js';
 import { ListarPublicacionesDto } from './dto/listar-publicacion.dto.js';
-import { opcionesImagen, urlImagen } from '../common/utils/subida-imagen.js';
+import { opcionesImagen, subirImagen} from '../common/utils/subida-imagen.js';
 
 @Controller('publicaciones')
 export class PublicacionesController {
     constructor(private publicacionesService: PublicacionesService) {}
 
     @Post()
-    @UseInterceptors(FileInterceptor('imagen', opcionesImagen ))
-    crear(@Body() dto: CrearPublicacionDto, @UploadedFile() imagen?: Express.Multer.File) {
-        return this.publicacionesService.crear(dto, urlImagen(imagen));
+    @UseInterceptors(FileInterceptor('imagen', opcionesImagen))
+    async crear(@Body() dto: CrearPublicacionDto, @UploadedFile() imagen?: Express.Multer.File) {
+        const url = await subirImagen(imagen);
+        return this.publicacionesService.crear(dto, url);
     }
 
     @Get()

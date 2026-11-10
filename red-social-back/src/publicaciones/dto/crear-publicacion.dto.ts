@@ -9,7 +9,7 @@ export class CrearPublicacionDto {
     @MaxLength(1000, { message: 'El mensaje es muy largo' })
     mensaje: string;
 
-    // Provisorio hasta el JWT (Sprint 3)
+    // TODO: Provisorio hasta el JWT
     @IsMongoId({ message: 'El usuario no es válido' })
     usuarioId: string;
 }
