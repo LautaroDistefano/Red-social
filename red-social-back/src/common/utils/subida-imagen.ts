@@ -32,7 +32,8 @@ export async function subirImagen(archivo?: Express.Multer.File): Promise<string
             })
             .end(archivo.buffer);
         });
-    } catch {
-        throw new InternalServerErrorException('No se pudo subir la imagen');
-    }
+        } catch (error) {
+            console.error('Error subiendo a Cloudinary:', error);
+            throw new InternalServerErrorException('No se pudo subir la imagen');
+        }
 }
