@@ -1,0 +1,9 @@
+.publicacion { display: flex; flex-direction: column; gap: 0.75rem; }
+.cabecera { display: flex; align-items: center; gap: 0.75rem; }
+.autor { display: flex; flex-direction: column; line-height: 1.2; }
+.autor small { color: var(--texto-suave); }
+h3 { margin: 0; }
+.mensaje { margin: 0; white-space: pre-wrap; }
+.imagen { width: 100%; max-height: 420px; object-fit: cover; border-radius: var(--radio-chico); }
+.acciones { display: flex; justify-content: space-between; align-items: center; }
+.me-gusta.activo { color: var(--acento); border-color: var(--acento); }

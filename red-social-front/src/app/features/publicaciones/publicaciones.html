@@ -1,1 +1,76 @@
-<p>publicaciones works!</p>
+<h2>Publicaciones</h2>
+
+<form class="card nueva" [formGroup]="form" (ngSubmit)="publicar()" novalidate>
+    <div class="campo">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" />
+        @if (form.controls.titulo.touched && form.controls.titulo.hasError('required')) {
+        <small class="error">El título es obligatorio</small>
+        }
+    </div>
+
+    <div class="campo">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" rows="3" formControlName="mensaje"></textarea>
+        @if (form.controls.mensaje.touched && form.controls.mensaje.hasError('required')) {
+        <small class="error">El mensaje es obligatorio</small>
+        }
+    </div>
+
+    <div class="campo">
+        <label for="imagen">Imagen (opcional)</label>
+        <input #inputImagen id="imagen" type="file" accept="image/*" (change)="onFileChange($event)" />
+        @if (errorImagen()) {
+        <small class="error">{{ errorImagen() }}</small>
+        }
+    </div>
+
+    <button type="submit" [disabled]="publicando()">
+        {{ publicando() ? 'Publicando...' : 'Publicar' }}
+    </button>
+</form>
+
+<div class="barra">
+    <label for="orden">Ordenar por</label>
+    <select id="orden" [value]="orden()" (change)="cambiarOrden($any($event.target).value)">
+        <option value="fecha">Más recientes</option>
+        <option value="meGusta">Más me gusta</option>
+    </select>
+</div>
+
+@if (cargando()) {
+    <p class="estado">Cargando publicaciones...</p>
+    } @else if (items().length === 0) {
+    <p class="estado">Todavía no hay publicaciones. ¡Sé el primero en publicar!</p>
+    } @else {
+    <div class="lista">
+        @for (pub of items(); track pub._id) {
+        <app-publicacion-card
+            [publicacion]="pub"
+            [usuarioId]="usuario?._id ?? null"
+            (alternarMeGusta)="alternarMeGusta($event)"
+            (eliminar)="pedirEliminar($event)" />
+        }
+    </div>
+
+    <nav class="paginacion">
+        <button type="button" class="btn-borde" [disabled]="pagina() === 1" (click)="irAPagina(pagina() - 1)">Anterior</button>
+        <span>Página {{ pagina() }} de {{ totalPaginas() }}</span>
+        <button type="button" class="btn-borde" [disabled]="pagina() === totalPaginas()" (click)="irAPagina(pagina() + 1)">Siguiente</button>
+    </nav>
+}
+
+@if (modal(); as m) {
+    <div class="modal-fondo">
+        <div class="modal" [class.fallo]="!m.confirmar">
+        <h3>{{ m.titulo }}</h3>
+        <p>{{ m.mensaje }}</p>
+        @if (m.confirmar) {
+            <button type="button" class="btn-borde" (click)="cerrarModal()">Cancelar</button>
+            <button type="button" class="btn-rojo" (click)="confirmarModal()">Eliminar</button>
+        } @else {
+            <button type="button" (click)="cerrarModal()">Aceptar</button>
+        }
+        </div>
+    </div>
+}

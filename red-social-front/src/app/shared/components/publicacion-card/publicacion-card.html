@@ -1,0 +1,27 @@
+<article class="card publicacion">
+    <header class="cabecera">
+        <img class="avatar" [src]="publicacion().usuario.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+        <div class="autor">
+        <strong>{{ publicacion().usuario.nombre }} {{ publicacion().usuario.apellido }}</strong>
+        <small>&#64;{{ publicacion().usuario.nombreUsuario }} · {{ publicacion().createdAt | date: 'dd/MM/yyyy HH:mm' }}</small>
+        </div>
+    </header>
+
+    <h3>{{ publicacion().titulo }}</h3>
+    <p class="mensaje">{{ publicacion().mensaje }}</p>
+
+    @if (publicacion().imagen) {
+        <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" />
+    }
+
+    <footer class="acciones">
+        <button type="button" class="btn-borde me-gusta" [class.activo]="leGusta()"
+                (click)="alternarMeGusta.emit(publicacion())">
+        {{ leGusta() ? '♥' : '♡' }} {{ publicacion().cantidadMeGusta }}
+        </button>
+
+        @if (esPropia()) {
+        <button type="button" class="btn-rojo" (click)="eliminar.emit(publicacion())">Eliminar</button>
+        }
+    </footer>
+</article>
