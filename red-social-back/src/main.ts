@@ -16,8 +16,8 @@ if (process.env.USE_PUBLIC_DNS === 'true') {
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  app.enableCors({
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true })); //WhiteList:True->Descarta campos no declarados,
+  app.enableCors({                                                              //Transform convierte tipos, los query params pasan de texto a number
     origin: [process.env.FRONT_URL ?? 'http://localhost:4200', 'http://localhost:4200'],
   });
   app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads' });

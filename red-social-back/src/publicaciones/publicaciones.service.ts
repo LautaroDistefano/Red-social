@@ -41,12 +41,12 @@ export class PublicacionesService {
 
         const [items, total] = await Promise.all([
         this.publicacionModel
-            .find(filtro)
-            .sort(orden)
-            .skip(offset)
-            .limit(limit)
-            .populate('usuario', CAMPOS_AUTOR)
-            .exec(),
+            .find(filtro)                          // busca los documentos que cumplen el filtro
+            .sort(orden)                           // los ordena
+            .skip(offset)                          // descarta los primeros N (páginas anteriores)
+            .limit(limit)                          // se queda con un máximo de N
+            .populate('usuario', CAMPOS_AUTOR)     // reemplaza el id del autor por sus datos (como un JOIN)
+            .exec(),                               // ejecuta la consulta y devuelve una Promise
         this.publicacionModel.countDocuments(filtro),
         ]);
 

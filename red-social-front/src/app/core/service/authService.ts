@@ -23,7 +23,7 @@ export class AuthService {
 
     login(datos: { usuario: string; password: string }) {
         return this.http.post<any>(`${this.url}/login`, datos).pipe(
-        tap((usuario) => localStorage.setItem('usuario', JSON.stringify(usuario)))
+            tap((usuario) => localStorage.setItem('usuario', JSON.stringify(usuario)))
         );
     }
 
