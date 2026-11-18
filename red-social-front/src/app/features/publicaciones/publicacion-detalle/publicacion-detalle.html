@@ -1,0 +1,82 @@
+<a routerLink="/publicaciones" class="volver">← Volver a publicaciones</a>
+
+@if (cargando()) {
+    <p class="estado">Cargando...</p>
+} @else if (publicacion(); as pub) {
+    <app-publicacion-card
+    [publicacion]="pub"
+    [usuarioId]="usuario?._id ?? null"
+    [detalle]="true"
+    (alternarMeGusta)="alternarMeGusta($event)"
+    (eliminar)="pedirEliminar($event)" />
+
+    <h3 class="subtitulo">Comentarios ({{ total() }})</h3>
+
+    <form class="card nuevo" (submit)="$event.preventDefault(); comentar()">
+        <textarea rows="3" maxlength="500" placeholder="Escribí un comentario..." [formControl]="nuevo"></textarea>
+        @if (nuevo.touched && nuevo.hasError('required')) {
+        <small class="error">El comentario no puede estar vacío</small>
+        }
+        <button type="submit" [disabled]="enviando()">{{ enviando() ? 'Enviando...' : 'Comentar' }}</button>
+    </form>
+
+    @if (comentarios().length === 0) {
+        <p class="estado">Todavía no hay comentarios. ¡Sé el primero!</p>
+    } @else {
+        <div class="lista">
+        @for (c of comentarios(); track c._id) {
+            <article class="card comentario">
+            <header>
+                <img class="avatar" [src]="c.usuario.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+                <div class="autor">
+                <strong>{{ c.usuario.nombre }} {{ c.usuario.apellido }}</strong>
+                <small>
+                    &#64;{{ c.usuario.nombreUsuario }} · {{ c.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+                    @if (c.modificado) { · <em class="editado">editado</em> }
+                </small>
+                </div>
+                @if (esMio(c) && editandoId() !== c._id) {
+                <button type="button" class="btn-borde" (click)="empezarEdicion(c)">Editar</button>
+                }
+            </header>
+
+            @if (editandoId() === c._id) {
+                <textarea rows="3" maxlength="500" [formControl]="edicion"></textarea>
+                @if (edicion.touched && edicion.hasError('required')) {
+                <small class="error">El comentario no puede estar vacío</small>
+                }
+                <div class="botones">
+                <button type="button" class="btn-borde" (click)="cancelarEdicion()">Cancelar</button>
+                <button type="button" (click)="guardarEdicion(c)">Guardar</button>
+                </div>
+            } @else {
+                <p class="texto">{{ c.texto }}</p>
+            }
+            </article>
+        }
+        </div>
+
+    @if (hayMas()) {
+        <div class="mas">
+            <button type="button" class="btn-borde" [disabled]="cargandoMas()" (click)="cargarComentarios()">
+            {{ cargandoMas() ? 'Cargando...' : 'Cargar más' }}
+            </button>
+        </div>
+        }
+    }
+}
+
+@if (modal(); as m) {
+    <div class="modal-fondo">
+        <div class="modal" [class.fallo]="!m.confirmar">
+        <h3>{{ m.titulo }}</h3>
+        <p>{{ m.mensaje }}</p>
+        @if (m.confirmar) {
+            <button type="button" class="btn-borde" (click)="modal.set(null)">Cancelar</button>
+            <button type="button" class="btn-rojo" (click)="confirmarModal()">Eliminar</button>
+        } @else {
+            <button type="button" (click)="cerrarModal()">Aceptar</button>
+        }
+        </div>
+    </div>
+}

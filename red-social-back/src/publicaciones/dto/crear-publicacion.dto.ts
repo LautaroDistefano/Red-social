@@ -8,8 +8,4 @@ export class CrearPublicacionDto {
     @IsString() @IsNotEmpty({ message: 'El mensaje es obligatorio' })
     @MaxLength(1000, { message: 'El mensaje es muy largo' })
     mensaje: string;
-
-    // TODO: Provisorio hasta el JWT
-    @IsMongoId({ message: 'El usuario no es válido' })
-    usuarioId: string;
 }

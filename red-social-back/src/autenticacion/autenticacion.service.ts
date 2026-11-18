@@ -3,10 +3,15 @@ import { UsuariosService } from '../usuarios/usuarios.service.js';
 import { RegistroDto } from './dto/registro.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import bcrypt from 'bcryptjs';
+import { PayloadJwt } from '../common/guards/jwt-auth.guard.js';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AutenticacionService {
-    constructor(private usuariosService: UsuariosService) {}
+    constructor(
+        private usuariosService: UsuariosService,
+        private jwt: JwtService,
+    ) {}
 
     async registro(dto: RegistroDto, urlImagen: string) {
         if (dto.password !== dto.repetirPassword) {
@@ -26,7 +31,7 @@ export class AutenticacionService {
         imagenPerfil: urlImagen,
         });
 
-        return this.sinPassword(usuario);
+        return this.respuestaConToken(usuario);
     }
 
     async login(dto: LoginDto) {
@@ -38,12 +43,34 @@ export class AutenticacionService {
         throw new UnauthorizedException('Usuario o contraseña incorrectos');
         }
 
+        return this.respuestaConToken(usuario);
+    }
+
+    // Devuelve los datos del usuario del token vigente
+    async autorizar(payload: PayloadJwt) {
+        const usuario = await this.usuariosService.buscarPorId(payload.sub); // 404 si ya no existe
         return this.sinPassword(usuario);
+    }
+
+    // Nuevo token con la misma payload y 15 min más
+    async refrescar(payload: PayloadJwt) {
+        const { sub, nombreUsuario, perfil } = payload;
+        return { token: await this.jwt.signAsync({ sub, nombreUsuario, perfil }) };
+    }
+
+    private async respuestaConToken(usuario: any) {
+        const payload: PayloadJwt = {
+        sub: usuario._id.toString(),
+        nombreUsuario: usuario.nombreUsuario,
+        perfil: usuario.perfil,
+        };
+        return { token: await this.jwt.signAsync(payload), usuario: this.sinPassword(usuario) };
     }
 
     private sinPassword(usuario: any) {
         const { password, ...resto } = usuario.toObject();
         return resto;
     }
+
 }
 

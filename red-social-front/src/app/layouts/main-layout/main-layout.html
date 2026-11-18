@@ -1,7 +1,17 @@
 <div class="layout">
-
-    <app-sidebar/>
+    <app-sidebar />
     <main class="contenido">
         <router-outlet />
     </main>
 </div>
+
+@if (sesion.mostrarAviso()) {
+    <div class="modal-fondo">
+        <div class="modal">
+        <h3>Tu sesión está por vencer</h3>
+        <p>{{ sesion.mensajeAviso() }}</p>
+        <button type="button" class="btn-borde" (click)="sesion.cerrar()">Cerrar sesión</button>
+        <button type="button" (click)="sesion.extender()">Extender sesión</button>
+        </div>
+    </div>
+}

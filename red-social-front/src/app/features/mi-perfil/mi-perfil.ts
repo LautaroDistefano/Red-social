@@ -63,8 +63,8 @@ export class MiPerfil implements OnInit {
   alternarMeGusta(pub: Publicacion) {
     const yaLeGusta = pub.meGusta.includes(this.sesion._id);
     const peticion = yaLeGusta
-      ? this.publicacionesService.quitarMeGusta(pub._id, this.sesion._id)
-      : this.publicacionesService.darMeGusta(pub._id, this.sesion._id);
+      ? this.publicacionesService.quitarMeGusta(pub._id)
+      : this.publicacionesService.darMeGusta(pub._id);
 
     peticion.subscribe({
       next: (actualizada) =>
@@ -82,7 +82,7 @@ export class MiPerfil implements OnInit {
   }
 
   private eliminar(pub: Publicacion) {
-    this.publicacionesService.eliminar(pub._id, this.sesion._id).subscribe({
+    this.publicacionesService.eliminar(pub._id).subscribe({
       // Recarga para que aparezca la siguiente publicación en el top 3
       next: () => this.cargar(),
       error: (err) => this.modal.set({ titulo: 'No pudimos eliminar la publicación', mensaje: mensajeDeError(err) }),

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { TemaService } from '../../core/service/tema.service';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/authService';
+import { SesionService } from '../../core/service/sesion.service';
 
 @Component({
   imports: [RouterLink],
@@ -12,12 +13,11 @@ import { AuthService } from '../../core/service/authService';
 export class Sidebar {
   tema = inject(TemaService)
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private sesion = inject(SesionService);
 
   usuario = this.authService.usuarioActual();
 
   cerrarSesion() {
-    this.authService.cerrarSesion();
-    this.router.navigate(['/login']);
+    this.sesion.cerrar();
   }
 }

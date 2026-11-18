@@ -7,3 +7,5 @@ h3 { margin: 0; }
 .imagen { width: 100%; max-height: 420px; object-fit: cover; border-radius: var(--radio-chico); }
 .acciones { display: flex; justify-content: space-between; align-items: center; }
 .me-gusta.activo { color: var(--acento); border-color: var(--acento); }
+.detalle .imagen { max-height: none; }
+.detalle h3 { font-size: 1.6rem; }

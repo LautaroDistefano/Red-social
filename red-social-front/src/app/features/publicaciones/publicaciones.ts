@@ -116,7 +116,6 @@ export class Publicaciones implements OnInit {
     const formData = new FormData();
     formData.append('titulo', titulo!);
     formData.append('mensaje', mensaje!);
-    formData.append('usuarioId', this.usuario._id);
     if (this.imagen) formData.append('imagen', this.imagen);
 
     this.publicando.set(true);
@@ -143,8 +142,8 @@ export class Publicaciones implements OnInit {
     if (!this.usuario) return;
     const yaLeGusta = pub.meGusta.includes(this.usuario._id);
     const peticion = yaLeGusta
-      ? this.service.quitarMeGusta(pub._id, this.usuario._id)
-      : this.service.darMeGusta(pub._id, this.usuario._id);
+      ? this.service.quitarMeGusta(pub._id)
+      : this.service.darMeGusta(pub._id);
 
     peticion.subscribe({
       next: (actualizada) =>
@@ -164,7 +163,7 @@ export class Publicaciones implements OnInit {
 
   private eliminar(pub: Publicacion) {
     if (!this.usuario) return;
-    this.service.eliminar(pub._id, this.usuario._id).subscribe({
+    this.service.eliminar(pub._id).subscribe({
       next: () => this.cargar(),
       error: (err) => this.mostrarError('No pudimos eliminar la publicación', err),
     });

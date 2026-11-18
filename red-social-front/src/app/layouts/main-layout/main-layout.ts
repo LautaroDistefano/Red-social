@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Sidebar } from '../sidebar/sidebar';
 import { RouterOutlet } from '@angular/router';
+import { SesionService } from '../../core/service/sesion.service';
 
 @Component({
-  imports: [RouterOutlet, Sidebar],
   selector: 'app-main-layout',
-  styleUrl: './main-layout.css',
+  imports: [RouterOutlet, Sidebar],
   templateUrl: './main-layout.html',
+  styleUrl: './main-layout.css',
 })
-export class MainLayout {}
+export class MainLayout implements OnInit, OnDestroy {
+  sesion = inject(SesionService);
+
+  ngOnInit() { this.sesion.iniciar(); }
+  ngOnDestroy() { this.sesion.detener(); }
+}

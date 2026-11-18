@@ -15,16 +15,20 @@ export class PublicacionesService {
         private usuariosService: UsuariosService,
     ) {}
 
-    async crear(dto: CrearPublicacionDto, imagen: string) {
-        await this.usuariosService.buscarPorId(dto.usuarioId); // 404 si no existe
-
+    async crear(dto: CrearPublicacionDto, usuarioId: string, imagen: string) {
+        await this.usuariosService.buscarPorId(usuarioId);
         const publicacion = await this.publicacionModel.create({
-        titulo: dto.titulo,
-        mensaje: dto.mensaje,
-        imagen,
-        usuario: dto.usuarioId,
+            titulo: dto.titulo,
+            mensaje: dto.mensaje,
+            imagen,
+            usuario: usuarioId,
         });
         return publicacion.populate('usuario', CAMPOS_AUTOR);
+    }
+    
+    async obtener(id: string) {
+        await this.buscarActiva(id);
+        return this.publicacionModel.findById(id).populate('usuario', CAMPOS_AUTOR).exec();
     }
 
     async listar(dto: ListarPublicacionesDto) {

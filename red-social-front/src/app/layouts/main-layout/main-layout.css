@@ -21,3 +21,5 @@
         padding: 1rem 1rem 6rem; /* espacio abajo para que la barra no tape el contenido */
     }
 }
+
+.modal button + button { margin-left: 0.5rem; }

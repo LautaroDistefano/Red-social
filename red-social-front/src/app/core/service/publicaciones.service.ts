@@ -27,15 +27,19 @@ export class PublicacionesService {
         return this.http.post<Publicacion>(this.url, formData);
     }
 
-    eliminar(id: string, usuarioId: string) {
-        return this.http.delete<{ mensaje: string }>(`${this.url}/${id}`, { params: { usuarioId } });
+    eliminar(id: string) {
+        return this.http.delete<{ mensaje: string }>(`${this.url}/${id}`);
     }
 
-    darMeGusta(id: string, usuarioId: string) {
-        return this.http.post<Publicacion>(`${this.url}/${id}/me-gusta`, { usuarioId });
+    darMeGusta(id: string) {
+        return this.http.post<Publicacion>(`${this.url}/${id}/me-gusta`, {});
     }
 
-    quitarMeGusta(id: string, usuarioId: string) {
-        return this.http.delete<Publicacion>(`${this.url}/${id}/me-gusta`, { params: { usuarioId } });
+    quitarMeGusta(id: string) {
+        return this.http.delete<Publicacion>(`${this.url}/${id}/me-gusta`);
+    }
+
+    obtener(id: string) {
+        return this.http.get<Publicacion>(`${this.url}/${id}`);
     }
 }

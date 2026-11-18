@@ -7,8 +7,11 @@
         </div>
     </header>
 
-    <h3>{{ publicacion().titulo }}</h3>
-    <p class="mensaje">{{ publicacion().mensaje }}</p>
+    @if (detalle()) {
+        <h3>{{ publicacion().titulo }}</h3>
+    } @else {
+        <h3><a [routerLink]="['/publicaciones', publicacion()._id]">{{ publicacion().titulo }}</a></h3>
+    }
 
     @if (publicacion().imagen) {
         <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" />
@@ -20,6 +23,7 @@
         {{ leGusta() ? '♥' : '♡' }} {{ publicacion().cantidadMeGusta }}
         </button>
 
+        
         @if (esPropia()) {
         <button type="button" class="btn-rojo" (click)="eliminar.emit(publicacion())">Eliminar</button>
         }

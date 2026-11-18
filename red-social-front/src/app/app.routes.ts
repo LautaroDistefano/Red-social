@@ -4,19 +4,24 @@ import { Registro } from './features/auth/registro/registro';
 import { Publicaciones } from './features/publicaciones/publicaciones';
 import { MiPerfil } from './features/mi-perfil/mi-perfil';
 import { MainLayout } from './layouts/main-layout/main-layout';
+import { Cargando } from './features/cargando/cargando';
+import { authGuard } from './core/guards/auth.guard';
+import { PublicacionDetalle } from './features/publicaciones/publicacion-detalle/publicacion-detalle';
 
 // app.routes.ts
 export const routes: Routes = [
+    { path: '', pathMatch: 'full', component: Cargando },
     { path: 'login', component: Login },
     { path: 'register', component: Registro },
     {
         path: '',
         component: MainLayout,
+        canActivate: [authGuard],
         children: [
         { path: 'publicaciones', component: Publicaciones },
         { path: 'mi-perfil', component: MiPerfil },
-        { path: '', redirectTo: 'publicaciones', pathMatch: 'full' },
+        { path: 'publicaciones/:id', component: PublicacionDetalle },
         ],
     },
-    { path: '**', redirectTo: 'login' },
+    { path: '**', redirectTo: '' },
 ];
