@@ -18,9 +18,9 @@ export const routes: Routes = [
         component: MainLayout,
         canActivate: [authGuard],
         children: [
-        { path: 'publicaciones', component: Publicaciones },
-        { path: 'mi-perfil', component: MiPerfil },
-        { path: 'publicaciones/:id', component: PublicacionDetalle },
+            { path: 'publicaciones', component: Publicaciones },
+            { path: 'mi-perfil', component: MiPerfil },
+            { path: 'publicaciones/:id', component: PublicacionDetalle },
         ],
     },
     { path: '**', redirectTo: '' },

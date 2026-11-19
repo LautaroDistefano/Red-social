@@ -14,8 +14,8 @@ export class AuthService {
 
     usuarioActual() {
         try {
-        const guardado = localStorage.getItem('usuario');
-        return guardado ? JSON.parse(guardado) : null;
+            const guardado = localStorage.getItem('usuario');
+            return guardado ? JSON.parse(guardado) : null;
         } catch {
         return null;
         }

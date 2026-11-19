@@ -15,7 +15,7 @@ export class SesionService {
     mostrarAviso = signal(false);
     mensajeAviso = signal('');
 
-    // Programa el aviso y el cierre según el vencimiento del token
+    // Programamos el aviso y el cierre según el vencimiento del token
     iniciar() {
         this.detener();
         const exp = this.auth.expiracion();
@@ -23,7 +23,7 @@ export class SesionService {
         if (!exp || !duracion) return;
 
         const ahora = Date.now();
-        const aviso = exp - duracion / 3;   // cuando queda 1/3 de la vida (5 de 15 min)
+        const aviso = exp - duracion / 3;   // cuando queda 1/3 de la vida (si son 15 minutos, se muetra a los 5min)
         const restante = exp - aviso;
 
         this.mensajeAviso.set(`Quedan ${this.formatear(restante)} de sesión. ¿Querés extenderla?`);

@@ -13,15 +13,15 @@ export class JwtAuthGuard implements CanActivate {
 
     async canActivate(contexto: ExecutionContext) {
         const req = contexto.switchToHttp().getRequest();
-        const [tipo, token] = req.headers.authorization?.split(' ') ?? [];
+        const [tipo, token] = req.headers.authorization?.split(' ') ?? []; //El token viene en el header "autorization: Bearer"
         if (tipo !== 'Bearer' || !token) {
         throw new UnauthorizedException('Token no enviado');
         }
         try {
-        req.usuario = await this.jwt.verifyAsync<PayloadJwt>(token);
+        req.usuario = await this.jwt.verifyAsync<PayloadJwt>(token); //verifyAsync verifica firma y vencimiento
         } catch {
         throw new UnauthorizedException('Token inválido o vencido');
         }
-        return true;
+        return true; //Vamos al controller
     }
 }

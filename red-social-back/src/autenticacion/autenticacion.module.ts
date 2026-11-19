@@ -10,7 +10,7 @@ import { AutenticacionService } from './autenticacion.service.js';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '15m' },
+      signOptions: { expiresIn: '1m' },
     }),
   ],
   controllers: [AutenticacionController],

@@ -18,9 +18,9 @@ export class ComentariosService {
     async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
         await this.verificarPublicacionActiva(publicacionId);
         const comentario = await this.comentarioModel.create({
-        texto: dto.texto,
-        publicacion: publicacionId,
-        usuario: usuarioId,
+            texto: dto.texto,
+            publicacion: publicacionId,
+            usuario: usuarioId,
         });
         return comentario.populate('usuario', CAMPOS_AUTOR);
     }

@@ -9,6 +9,8 @@ export class ComentariosService {
     private base = `${environment.apiUrl}/publicaciones`;
 
     listar(publicacionId: string, offset: number, limit: number) {
+        // limit: cuántos elementos traer como máximo en esa petición.
+        // offset: cuántos elementos saltear desde el principio antes de empezar a traer.
         const params = new HttpParams().set('offset', offset).set('limit', limit);
         return this.http.get<ListadoComentarios>(`${this.base}/${publicacionId}/comentarios`, { params });
     }
