@@ -30,13 +30,29 @@
         <p class="estado">Todavía no hiciste ninguna publicación.</p>
     } @else {
         <div class="lista">
-        @for (pub of publicaciones(); track pub._id) {
-            <app-publicacion-card
-            [publicacion]="pub"
-            [usuarioId]="sesion._id"
-            (alternarMeGusta)="alternarMeGusta($event)"
-            (eliminar)="pedirEliminar($event)" />
-        }
+            @for (pub of publicaciones(); track pub._id) {
+                <div class="bloque">
+                    <app-publicacion-card
+                        [publicacion]="pub"
+                        [usuarioId]="sesion._id"
+                        (alternarMeGusta)="alternarMeGusta($event)"
+                        (eliminar)="pedirEliminar($event)" />
+
+                    <div class="comentarios">
+                        <h4>Comentarios</h4>
+                        @for (c of comentarios()[pub._id] ?? []; track c._id) {
+                            <p class="comentario">
+                                <strong>{{ c.usuario.nombre }} {{ c.usuario.apellido }}</strong>
+                                @if (c.modificado) { <em class="editado">(editado)</em> }
+                                <br />{{ c.texto }}
+                            </p>
+                        } @empty {
+                            <p class="vacio">Sin comentarios todavía.</p>
+                        }
+                        <a [routerLink]="['/publicaciones', pub._id]">Ver todos los comentarios</a>
+                    </div>
+                </div>
+            }
         </div>
     }
 }

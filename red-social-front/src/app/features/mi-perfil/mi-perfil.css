@@ -19,6 +19,13 @@ dd { margin: 0; overflow-wrap: anywhere; }
 .estado { text-align: center; color: var(--texto-suave); padding: 2rem 0; }
 .modal button + button { margin-left: 0.5rem; }
 
+.bloque { display: flex; flex-direction: column; gap: 0.5rem; }
+.comentarios { padding: 0 0.5rem; }
+.comentarios h4 { margin: 0 0 0.5rem; }
+.comentario { margin: 0 0 0.5rem; padding: 0.5rem 0.75rem; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio-chico); overflow-wrap: anywhere; }
+.editado { color: var(--acento); font-style: normal; }
+.vacio { color: var(--texto-suave); }
+
 @media (max-width: 480px) {
     .datos { flex-direction: column; align-items: center; text-align: center; }
     dl { text-align: left; }

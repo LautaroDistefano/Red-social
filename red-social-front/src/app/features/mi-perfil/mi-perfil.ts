@@ -8,6 +8,9 @@ import { mensajeDeError } from '../../shared/utils/errores';
 import { AuthService } from '../../core/service/authService';
 import { UsuariosService } from '../../core/service/usuario.service';
 import { PublicacionesService } from '../../core/service/publicaciones.service';
+import { ComentariosService } from '../../core/service/comentarios.service';
+import { Comentario } from '../../core/models/comentario.model';
+import { RouterLink } from '@angular/router';
 
 interface DatosModal {
   titulo: string;
@@ -17,7 +20,7 @@ interface DatosModal {
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [DatePipe, PublicacionCard],
+  imports: [DatePipe, PublicacionCard, RouterLink],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })
@@ -25,9 +28,11 @@ export class MiPerfil implements OnInit {
   private auth = inject(AuthService);
   private usuariosService = inject(UsuariosService);
   private publicacionesService = inject(PublicacionesService);
-
+  private comentariosService = inject(ComentariosService);
+  
   sesion = this.auth.usuarioActual();
-
+  
+  comentarios = signal<Record<string, Comentario[]>>({});
   perfil = signal<Usuario | null>(null);
   publicaciones = signal<Publicacion[]>([]);
   cargando = signal(true);
@@ -51,12 +56,20 @@ export class MiPerfil implements OnInit {
       next: ({ perfil, publicaciones }) => {
         this.perfil.set(perfil);
         this.publicaciones.set(publicaciones.items);
+        publicaciones.items.forEach((p) => this.cargarComentarios(p._id));
         this.cargando.set(false);
       },
       error: (err) => {
         this.cargando.set(false);
         this.modal.set({ titulo: 'No pudimos cargar tu perfil', mensaje: mensajeDeError(err) });
       },
+    });
+  }
+
+  private cargarComentarios(publicacionId: string) {
+    this.comentariosService.listar(publicacionId, 0, 3).subscribe({
+      next: (r) => this.comentarios.update((m) => ({ ...m, [publicacionId]: r.items })),
+      error: () => this.comentarios.update((m) => ({ ...m, [publicacionId]: [] })),
     });
   }
 
