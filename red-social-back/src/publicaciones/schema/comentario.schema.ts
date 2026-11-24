@@ -10,7 +10,7 @@ export class Comentario {
 
     @Prop({ type: Types.ObjectId, ref: 'Publicacion', required: true, index: true })
     publicacion: Types.ObjectId;
-
+    
     @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
     usuario: Types.ObjectId;
 

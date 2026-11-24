@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isValidObjectId, Model } from 'mongoose';
+import { isValidObjectId, Model, Types } from 'mongoose';
 import { Comentario, ComentarioDocument } from './schema/comentario.schema.js';
 import { Publicacion, PublicacionDocument } from './schema/publicacion.schema.js';
 import { CrearComentarioDto } from './dto/crear-comentario.dto.js';
@@ -15,15 +15,17 @@ export class ComentariosService {
         @InjectModel(Publicacion.name) private publicacionModel: Model<PublicacionDocument>,
     ) {}
 
-    async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
-        await this.verificarPublicacionActiva(publicacionId);
-        const comentario = await this.comentarioModel.create({
-            texto: dto.texto,
-            publicacion: publicacionId,
-            usuario: usuarioId,
-        });
-        return comentario.populate('usuario', CAMPOS_AUTOR);
-    }
+async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
+    await this.verificarPublicacionActiva(publicacionId);
+
+    const comentario = await this.comentarioModel.create({
+        texto: dto.texto,
+        publicacion: new Types.ObjectId(publicacionId),
+        usuario: new Types.ObjectId(usuarioId),
+    });
+
+    return comentario.populate('usuario', CAMPOS_AUTOR);
+}
 
     async listar(publicacionId: string, dto: ListarComentariosDto) {
         await this.verificarPublicacionActiva(publicacionId);

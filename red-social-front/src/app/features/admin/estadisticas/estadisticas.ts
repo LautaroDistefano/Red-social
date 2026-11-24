@@ -6,6 +6,8 @@ import { mensajeDeError } from '../../../shared/utils/errores';
 import { EstadisticasService, Punto } from '../../../core/service/estadisticas.service';
 
 Chart.register(...registerables);
+Chart.defaults.color = '#d0d0d0'; // texto de leyendas y de ejes   
+Chart.defaults.borderColor = 'rgba(255,255,255,0.1)'; //Para las lineas de la grilla
 
 const PALETA = ['#c8352e', '#294f5c', '#295c47', '#e0a030', '#7a5240', '#6a4c93', '#2a9d8f', '#e76f51', '#457b9d', '#8d99ae'];
 
@@ -66,9 +68,9 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
     }).subscribe({
       next: (r) => {
         this.hayDatos.set({ usuarios: r.usuarios.length > 0, dias: r.dias.length > 0, pubs: r.pubs.length > 0 });
-        this.dibujar('usuarios', this.cUsuarios(), this.config('bar', r.usuarios, 'Publicaciones'));
+        this.dibujar('usuarios', this.cUsuarios(), this.config('doughnut', r.usuarios, 'Publicaciones'));
         this.dibujar('dias', this.cDias(), this.config('line', r.dias, 'Comentarios'));
-        this.dibujar('pubs', this.cPubs(), this.config('doughnut', r.pubs, 'Comentarios'));
+        this.dibujar('pubs', this.cPubs(), this.config('barH', r.pubs, 'Comentarios'));
         this.cargando.set(false);
       },
       error: (err) => {
@@ -78,29 +80,42 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
     });
   }
 
-  private config(tipo: 'bar' | 'line' | 'doughnut', datos: Punto[], titulo: string): ChartConfiguration {
+  private config(tipo: 'barH' | 'line' | 'doughnut', datos: Punto[], titulo: string): ChartConfiguration {
     const circular = tipo === 'doughnut';
+    const horizontal = tipo === 'barH';
+
+    const eje = { beginAtZero: true, ticks: { precision: 0 } };
+    const recortar = function (this: any, valor: any) {
+      const t: string = this.getLabelForValue(valor);
+      return t.length > 24 ? t.slice(0, 23) + '…' : t; // títulos largos
+    };
+
     return {
-      type: tipo,
+      type: horizontal ? 'bar' : tipo,
       data: {
         labels: datos.map((d) => d.etiqueta),
         datasets: [
           {
             label: titulo,
             data: datos.map((d) => d.total),
-            backgroundColor: circular ? PALETA : tipo === 'bar' ? PALETA[0] : 'rgba(200,53,46,0.2)',
-            borderColor: PALETA[0],
-            borderWidth: tipo === 'line' ? 3 : 1,
+            backgroundColor: circular ? PALETA : horizontal ? PALETA[0] : 'rgba(200,53,46,0.2)',
+            borderColor: circular ? '#1a1a1a' : PALETA[0], // en la torta, borde del color de la tarjeta
+            borderWidth: tipo === 'line' ? 3 : circular ? 2 : 0,
             fill: tipo === 'line',
             tension: 0.3,
           },
         ],
       },
       options: {
+        indexAxis: horizontal ? 'y' : 'x',
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: circular } },
-        scales: circular ? {} : { y: { beginAtZero: true, ticks: { precision: 0 } } },
+        plugins: { legend: { display: circular, position: 'bottom' } },
+        scales: circular
+          ? {}
+          : horizontal
+            ? { x: eje, y: { ticks: { callback: recortar } } }
+            : { y: eje },
       },
     } as ChartConfiguration;
   }

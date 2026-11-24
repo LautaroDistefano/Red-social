@@ -30,51 +30,51 @@ export class EstadisticasService {
     // Cantidad de publicaciones por usuario
     publicacionesPorUsuario(dto: RangoFechasDto) {
         return this.publicacionModel.aggregate([
-            { $match: { createdAt: this.rango(dto), eliminada: false } },
-            { $group: { _id: '$usuario', total: { $sum: 1 } } },
-            { $lookup: { from: 'usuarios', localField: '_id', foreignField: '_id', as: 'autor' } },
-            { $unwind: '$autor' },
-            {
-                $project: {
-                _id: 0,
-                etiqueta: { $concat: ['$autor.nombre', ' ', '$autor.apellido'] },
-                total: 1,
-                },
+        { $match: { createdAt: this.rango(dto), eliminada: false } },
+        { $group: { _id: '$usuario', total: { $sum: 1 } } },
+        { $lookup: { from: 'usuarios', localField: '_id', foreignField: '_id', as: 'autor' } },
+        { $unwind: '$autor' },
+        {
+            $project: {
+            _id: 0,
+            etiqueta: { $concat: ['$autor.nombre', ' ', '$autor.apellido'] },
+            total: 1,
             },
-            { $sort: { total: -1 } },
+        },
+        { $sort: { total: -1 } },
         ]);
     }
 
     // Cantidad de comentarios por día
     comentariosPorDia(dto: RangoFechasDto) {
         return this.comentarioModel.aggregate([
-            { $match: { createdAt: this.rango(dto) } },
-            // Se descartan los comentarios de publicaciones dadas de baja
-            { $lookup: { from: 'publicacions', localField: 'publicacion', foreignField: '_id', as: 'pub' } },
-            { $unwind: '$pub' },
-            { $match: { 'pub.eliminada': false } },
-            {
-                $group: {
-                _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: ZONA } },
-                total: { $sum: 1 },
-                },
+        { $match: { createdAt: this.rango(dto) } },
+        // Se descartan los comentarios de publicaciones dadas de baja
+        { $lookup: { from: this.publicacionModel.collection.name, localField: 'publicacion', foreignField: '_id', as: 'pub' } },
+        { $unwind: '$pub' },
+        { $match: { 'pub.eliminada': false } },
+        {
+            $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: ZONA } },
+            total: { $sum: 1 },
             },
-            { $project: { _id: 0, etiqueta: '$_id', total: 1 } },
-            { $sort: { etiqueta: 1 } },
+        },
+        { $project: { _id: 0, etiqueta: '$_id', total: 1 } },
+        { $sort: { etiqueta: 1 } },
         ]);
     }
 
     // Cantidad de comentarios en cada publicación (top 10)
     comentariosPorPublicacion(dto: RangoFechasDto) {
         return this.comentarioModel.aggregate([
-            { $match: { createdAt: this.rango(dto) } },
-            { $group: { _id: '$publicacion', total: { $sum: 1 } } },
-            { $lookup: { from: 'publicacions', localField: '_id', foreignField: '_id', as: 'pub' } },
-            { $unwind: '$pub' },
-            { $match: { 'pub.eliminada': false } },
-            { $project: { _id: 0, etiqueta: '$pub.titulo', total: 1 } },
-            { $sort: { total: -1 } },
-            { $limit: 10 },
+        { $match: { createdAt: this.rango(dto) } },
+        { $group: { _id: '$publicacion', total: { $sum: 1 } } },
+        { $lookup: { from: this.publicacionModel.collection.name, localField: '_id', foreignField: '_id', as: 'pub' } },
+        { $unwind: '$pub' },
+        { $match: { 'pub.eliminada': false } },
+        { $project: { _id: 0, etiqueta: '$pub.titulo', total: 1 } },
+        { $sort: { total: -1 } },
+        { $limit: 10 },
         ]);
     }
 }
