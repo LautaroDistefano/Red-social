@@ -1,0 +1,41 @@
+<h2>Estadísticas</h2>
+
+<form class="card filtros" [formGroup]="rango" (submit)="$event.preventDefault(); consultar()">
+    <div class="campo">
+        <label for="desde">Desde</label>
+        <input id="desde" type="date" formControlName="desde" />
+    </div>
+    <div class="campo">
+        <label for="hasta">Hasta</label>
+        <input id="hasta" type="date" formControlName="hasta" />
+    </div>
+    <button type="submit" [disabled]="cargando()">{{ cargando() ? 'Consultando...' : 'Consultar' }}</button>
+</form>
+
+<section class="card grafico">
+    <h3>Publicaciones por usuario</h3>
+    <div class="lienzo"><canvas #cUsuarios></canvas></div>
+    @if (!hayDatos().usuarios) { <p class="vacio">No hay datos en este período.</p> }
+</section>
+
+<section class="card grafico">
+    <h3>Comentarios por día</h3>
+    <div class="lienzo"><canvas #cDias></canvas></div>
+    @if (!hayDatos().dias) { <p class="vacio">No hay datos en este período.</p> }
+</section>
+
+<section class="card grafico">
+    <h3>Comentarios por publicación (top 10)</h3>
+    <div class="lienzo"><canvas #cPubs></canvas></div>
+    @if (!hayDatos().pubs) { <p class="vacio">No hay datos en este período.</p> }
+</section>
+
+@if (modal(); as m) {
+    <div class="modal-fondo">
+        <div class="modal fallo">
+        <h3>{{ m.titulo }}</h3>
+        <p>{{ m.mensaje }}</p>
+        <button type="button" (click)="modal.set(null)">Aceptar</button>
+        </div>
+    </div>
+}

@@ -8,6 +8,7 @@ import { Comentario, ComentarioSchema } from './schema/comentario.schema.js';
 import { ComentariosController } from './comentarios.controller.js';
 import { ComentariosService } from './comentarios.service.js';
 import { EstadisticasController } from './estadisticas/estadisticas.controller.js';
+import { EstadisticasService } from './estadisticas/estadisticas.service.js';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { EstadisticasController } from './estadisticas/estadisticas.controller.j
     UsuariosModule,
   ],
   controllers: [PublicacionesController, ComentariosController, EstadisticasController],
-  providers: [PublicacionesService, ComentariosService, EstadisticasController],
+  providers: [PublicacionesService, ComentariosService, EstadisticasService],
 })
 export class PublicacionesModule {}

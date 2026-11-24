@@ -9,6 +9,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { PublicacionDetalle } from './features/publicaciones/publicacion-detalle/publicacion-detalle';
 import { AdminUsuarios } from './features/admin/usuarios/usuarios';
 import { adminGuard } from './core/guards/admin.guard';
+import { AdminEstadisticas } from './features/admin/estadisticas/estadisticas';
 
 // app.routes.ts
 export const routes: Routes = [
@@ -24,6 +25,7 @@ export const routes: Routes = [
             { path: 'mi-perfil', component: MiPerfil },
             { path: 'publicaciones/:id', component: PublicacionDetalle },
             { path: 'dashboard/usuarios', component: AdminUsuarios, canActivate: [adminGuard] },
+            { path: 'dashboard/estadisticas', component: AdminEstadisticas, canActivate: [adminGuard] },
         ],
     },
     { path: '**', redirectTo: '' },

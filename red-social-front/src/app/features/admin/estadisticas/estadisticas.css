@@ -1,0 +1,5 @@
+.filtros { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.grafico { margin-bottom: 1.5rem; }
+.grafico h3 { margin-bottom: 1rem; }
+.lienzo { position: relative; height: 300px; }
+.vacio { text-align: center; color: var(--texto-suave); margin: 0.5rem 0 0; }
