@@ -46,6 +46,7 @@
     <div class="lista">
         @for (pub of items(); track pub._id) {
         <app-publicacion-card
+            [esAdmin]="esAdmin"
             [publicacion]="pub"
             [usuarioId]="usuario?._id ?? null"
             (alternarMeGusta)="alternarMeGusta($event)"

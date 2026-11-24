@@ -13,6 +13,7 @@ export class PublicacionCard {
   publicacion = input.required<Publicacion>();
   usuarioId = input<string | null>(null);
   detalle = input(false);
+  esAdmin = input(false);
 
   alternarMeGusta = output<Publicacion>();
   eliminar = output<Publicacion>();
@@ -23,4 +24,5 @@ export class PublicacionCard {
   });
 
   esPropia = computed(() => this.publicacion().usuario?._id === this.usuarioId());
+  puedeEliminar = computed(() => this.esPropia() || this.esAdmin());
 }

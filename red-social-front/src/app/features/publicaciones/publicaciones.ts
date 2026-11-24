@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, computed, inject, input, signal, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrdenPublicaciones, Publicacion } from '../../core/models/publicacion.model';
 import { PublicacionCard } from '../../shared/components/publicacion-card/publicacion-card';
@@ -33,6 +33,7 @@ export class Publicaciones implements OnInit {
   cargando = signal(false);
   publicando = signal(false);
   modal = signal<DatosModal | null>(null);
+  esAdmin = this.auth.esAdmin();
 
   totalPaginas = computed(() => Math.max(1, Math.ceil(this.total() / this.limit)));
 

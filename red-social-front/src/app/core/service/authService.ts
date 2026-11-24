@@ -85,4 +85,8 @@ export class AuthService {
         const p = this.payload();
         return p?.exp && p?.iat ? (p.exp - p.iat) * 1000 : null;
     }
+
+    esAdmin(): boolean {
+        return this.usuarioActual()?.perfil === 'administrador';
+    }
 }

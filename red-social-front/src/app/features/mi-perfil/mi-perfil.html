@@ -33,6 +33,7 @@
             @for (pub of publicaciones(); track pub._id) {
                 <div class="bloque">
                     <app-publicacion-card
+                        [esAdmin]="esAdmin"
                         [publicacion]="pub"
                         [usuarioId]="sesion._id"
                         (alternarMeGusta)="alternarMeGusta($event)"

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { Usuario } from '../../core/models/usuario.model';
 import { Publicacion } from '../../core/models/publicacion.model';
@@ -37,6 +37,7 @@ export class MiPerfil implements OnInit {
   publicaciones = signal<Publicacion[]>([]);
   cargando = signal(true);
   modal = signal<DatosModal | null>(null);
+  esAdmin = this.auth.esAdmin();
 
   ngOnInit() {
     if (!this.sesion) {

@@ -24,8 +24,8 @@
         </button>
 
         
-        @if (esPropia()) {
-        <button type="button" class="btn-rojo" (click)="eliminar.emit(publicacion())">Eliminar</button>
+        @if (puedeEliminar()) {
+            <button type="button" class="btn-rojo" (click)="eliminar.emit(publicacion())">Eliminar</button>
         }
     </footer>
 </article>

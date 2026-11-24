@@ -10,4 +10,21 @@ export class UsuariosService {
     obtener(id: string) {
         return this.http.get<Usuario>(`${API_URL}/usuarios/${id}`);
     }
+
+    listar() {
+        return this.http.get<Usuario[]>(`${API_URL}/usuarios`);
+    }
+
+    crear(formData: FormData) {
+        return this.http.post<Usuario>(`${API_URL}/usuarios`, formData);
+    }
+
+    deshabilitar(id: string) {
+        return this.http.delete<Usuario>(`${API_URL}/usuarios/${id}`);
+    }
+
+    habilitar(id: string) {
+        return this.http.post<Usuario>(`${API_URL}/usuarios/${id}/habilitar`, {});
+    }
+
 }

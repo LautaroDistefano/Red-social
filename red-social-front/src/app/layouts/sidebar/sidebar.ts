@@ -15,6 +15,8 @@ export class Sidebar {
   private authService = inject(AuthService);
   private sesion = inject(SesionService);
 
+  esAdmin = inject(AuthService).esAdmin()
+
   usuario = this.authService.usuarioActual();
 
   cerrarSesion() {

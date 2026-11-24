@@ -7,6 +7,8 @@ import { MainLayout } from './layouts/main-layout/main-layout';
 import { Cargando } from './features/cargando/cargando';
 import { authGuard } from './core/guards/auth.guard';
 import { PublicacionDetalle } from './features/publicaciones/publicacion-detalle/publicacion-detalle';
+import { AdminUsuarios } from './features/admin/usuarios/usuarios';
+import { adminGuard } from './core/guards/admin.guard';
 
 // app.routes.ts
 export const routes: Routes = [
@@ -21,6 +23,7 @@ export const routes: Routes = [
             { path: 'publicaciones', component: Publicaciones },
             { path: 'mi-perfil', component: MiPerfil },
             { path: 'publicaciones/:id', component: PublicacionDetalle },
+            { path: 'dashboard/usuarios', component: AdminUsuarios, canActivate: [adminGuard] },
         ],
     },
     { path: '**', redirectTo: '' },

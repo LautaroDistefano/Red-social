@@ -4,6 +4,7 @@
     <p class="estado">Cargando...</p>
 } @else if (publicacion(); as pub) {
     <app-publicacion-card
+    [esAdmin]="esAdmin"
     [publicacion]="pub"
     [usuarioId]="usuario?._id ?? null"
     [detalle]="true"

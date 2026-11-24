@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Publicacion } from '../../../core/models/publicacion.model';
@@ -28,6 +28,7 @@ export class PublicacionDetalle implements OnInit {
   private router = inject(Router);
   private publicacionesService = inject(PublicacionesService);
   private comentariosService = inject(ComentariosService);
+  private auth = inject(AuthService);
 
   usuario = inject(AuthService).usuarioActual();
   readonly limit = 5;
@@ -40,6 +41,7 @@ export class PublicacionDetalle implements OnInit {
   cargandoMas = signal(false);
   enviando = signal(false);
   modal = signal<DatosModal | null>(null);
+  esAdmin = this.auth.esAdmin();
 
   nuevo = new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(500)] });
 

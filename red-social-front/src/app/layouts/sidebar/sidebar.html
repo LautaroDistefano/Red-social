@@ -13,6 +13,10 @@
         </div>
     }
 
+    @if (esAdmin) {
+    <a routerLink="/dashboard/usuarios" routerLinkActive="activo">Ver usuarios</a>
+    }
+
     <button type="button" class="btn-tema" (click)="tema.alternar()">
         {{ tema.tema() === 'claro' ? '🌙' : '☀️' }}
     </button>

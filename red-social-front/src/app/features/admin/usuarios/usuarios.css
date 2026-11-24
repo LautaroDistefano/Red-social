@@ -1,0 +1,11 @@
+.encabezado { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.nuevo { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.perfil { display: flex; gap: 1.5rem; border: 2px solid var(--borde); border-radius: var(--radio-chico); padding: 0.5rem 1rem; }
+.perfil label { display: flex; align-items: center; gap: 0.4rem; }
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.6rem; border-bottom: 1px solid var(--borde); }
+.quien { display: flex; align-items: center; gap: 0.6rem; }
+small { color: var(--texto-suave); }
+.estado { text-align: center; color: var(--texto-suave); padding: 2rem 0; }
+.modal button + button { margin-left: 0.5rem; }
