@@ -7,6 +7,7 @@ import { UsuariosModule } from '../usuarios/usuarios.module.js';
 import { Comentario, ComentarioSchema } from './schema/comentario.schema.js';
 import { ComentariosController } from './comentarios.controller.js';
 import { ComentariosService } from './comentarios.service.js';
+import { EstadisticasController } from './estadisticas/estadisticas.controller.js';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ComentariosService } from './comentarios.service.js';
     ]),
     UsuariosModule,
   ],
-  controllers: [PublicacionesController, ComentariosController],
-  providers: [PublicacionesService, ComentariosService],
+  controllers: [PublicacionesController, ComentariosController, EstadisticasController],
+  providers: [PublicacionesService, ComentariosService, EstadisticasController],
 })
 export class PublicacionesModule {}
