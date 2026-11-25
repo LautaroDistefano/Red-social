@@ -31,7 +31,7 @@ async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
         await this.verificarPublicacionActiva(publicacionId);
         const offset = dto.offset ?? 0;
         const limit = dto.limit ?? 5;
-        const filtro = { publicacion: publicacionId };
+        const filtro = { publicacion: new Types.ObjectId(publicacionId) };
 
         const [items, total] = await Promise.all([
         this.comentarioModel
@@ -52,7 +52,7 @@ async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
         if (!isValidObjectId(comentarioId)) throw new NotFoundException('Comentario no encontrado');
 
         const comentario = await this.comentarioModel
-        .findOne({ _id: comentarioId, publicacion: publicacionId })
+        .findOne({ _id: comentarioId, publicacion: new Types.ObjectId(publicacionId) })
         .exec();
         if (!comentario) throw new NotFoundException('Comentario no encontrado');
 
