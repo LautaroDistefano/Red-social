@@ -31,6 +31,17 @@
     color: var(--aside-texto);
     font-size: 1.5rem;
     font-weight: 800;
+    border-radius: 10px;
+}
+
+.logo a{
+    text-decoration: none;
+    list-style: none;
+    color: var(--aside-texto);
+}
+
+.logo:hover{
+    background-color: var(--borde);
 }
 
 /* ---------- Links ---------- */
@@ -153,6 +164,4 @@ nav a {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
 }
-
-
 }
