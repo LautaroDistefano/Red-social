@@ -4,21 +4,46 @@
     <p class="estado">Cargando perfil...</p>
 } @else if (perfil(); as p) {
     <section class="card datos">
-        <img class="foto" [src]="p.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+        <img class="foto" [src]="p.imagenPerfil || '/avatar-default.png'" alt="Foto de perfil" />
 
         <div class="info">
-        <h3>{{ p.nombre }} {{ p.apellido }}</h3>
-        <p class="usuario">&#64;{{ p.nombreUsuario }}</p>
-        @if (p.descripcion) {
-            <p class="descripcion">{{ p.descripcion }}</p>
-        }
+            @if (editando()) {
+                <form class="editar" [formGroup]="formPerfil" (ngSubmit)="guardarPerfil()" novalidate>
+                    <div class="campo">
+                        <label for="nombre">Nombre</label>
+                        <input id="nombre" formControlName="nombre" maxlength="50" />
+                        @if (formPerfil.controls.nombre.touched && formPerfil.controls.nombre.invalid) {
+                            <small class="error">El nombre es obligatorio</small>
+                        }
+                    </div>
 
-        <dl>
-            <dt>Correo</dt>
-            <dd>{{ p.correo }}</dd>
-            <dt>Fecha de nacimiento</dt>
-            <dd>{{ p.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
-        </dl>
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" rows="3" maxlength="300" formControlName="descripcion"></textarea>
+                    </div>
+
+                    <div class="botones">
+                        <button type="button" class="btn-borde" (click)="cancelarEdicion()">Cancelar</button>
+                        <button type="submit" [disabled]="guardando()">
+                            {{ guardando() ? 'Guardando...' : 'Guardar' }}
+                        </button>
+                    </div>
+                </form>
+            } @else {
+                <h3>{{ p.nombre }} {{ p.apellido }}</h3>
+                <p class="usuario">&#64;{{ p.nombreUsuario }}</p>
+                @if (p.descripcion) {
+                    <p class="descripcion">{{ p.descripcion }}</p>
+                }
+                <button type="button" class="btn-borde" (click)="empezarEdicion()">Editar perfil</button>
+            }
+
+            <dl>
+                <dt>Correo</dt>
+                <dd>{{ p.correo }}</dd>
+                <dt>Fecha de nacimiento</dt>
+                <dd>{{ p.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+            </dl>
         </div>
     </section>
 
@@ -45,14 +70,14 @@
 @if (modal(); as m) {
     <div class="modal-fondo">
         <div class="modal" [class.fallo]="!m.confirmar">
-        <h3>{{ m.titulo }}</h3>
-        <p>{{ m.mensaje }}</p>
-        @if (m.confirmar) {
-            <button type="button" class="btn-borde" (click)="cerrarModal()">Cancelar</button>
-            <button type="button" class="btn-rojo" (click)="confirmarModal()">Eliminar</button>
-        } @else {
-            <button type="button" (click)="cerrarModal()">Aceptar</button>
-        }
+            <h3>{{ m.titulo }}</h3>
+            <p>{{ m.mensaje }}</p>
+            @if (m.confirmar) {
+                <button type="button" class="btn-borde" (click)="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn-rojo" (click)="confirmarModal()">Eliminar</button>
+            } @else {
+                <button type="button" (click)="cerrarModal()">Aceptar</button>
+            }
         </div>
     </div>
 }

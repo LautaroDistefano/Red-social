@@ -12,6 +12,7 @@ import { ComentariosService } from '../../core/service/comentarios.service';
 import { Comentario } from '../../core/models/comentario.model';
 import { RouterLink } from '@angular/router';
 import { RecortarPipe } from '../../shared/pipes/recortar-pipe';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 interface DatosModal {
   titulo: string;
@@ -21,7 +22,7 @@ interface DatosModal {
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [DatePipe, PublicacionCard, RouterLink, RecortarPipe],
+  imports: [DatePipe, PublicacionCard, RouterLink, RecortarPipe, ReactiveFormsModule],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })
@@ -30,6 +31,7 @@ export class MiPerfil implements OnInit {
   private usuariosService = inject(UsuariosService);
   private publicacionesService = inject(PublicacionesService);
   private comentariosService = inject(ComentariosService);
+  private fb = inject(FormBuilder)
   
   sesion = this.auth.usuarioActual();
   
@@ -39,6 +41,13 @@ export class MiPerfil implements OnInit {
   cargando = signal(true);
   modal = signal<DatosModal | null>(null);
   esAdmin = this.auth.esAdmin();
+  editando = signal(false);
+  guardando = signal(false);
+
+  formPerfil = this.fb.group({
+    nombre: ['', [Validators.required, Validators.maxLength(50)]],
+    descripcion: ['', Validators.maxLength(300)],
+  });
 
   ngOnInit() {
     if (!this.sesion) {
@@ -112,5 +121,38 @@ export class MiPerfil implements OnInit {
 
   cerrarModal() {
     this.modal.set(null);
+  }
+
+  empezarEdicion() {
+    const p = this.perfil();
+    if (!p) return;
+    this.formPerfil.setValue({ nombre: p.nombre, descripcion: p.descripcion ?? '' });
+    this.editando.set(true);
+  }
+
+  cancelarEdicion() {
+    this.editando.set(false);
+  }
+
+  guardarPerfil() {
+    if (this.formPerfil.invalid) {
+      this.formPerfil.markAllAsTouched();
+      return;
+    }
+    const { nombre, descripcion } = this.formPerfil.getRawValue();
+    this.guardando.set(true);
+    this.usuariosService.editarPerfil({ nombre: nombre!.trim(), descripcion: (descripcion ?? '').trim() }).subscribe({
+      next: (actualizado) => {
+        this.perfil.set(actualizado);
+        this.auth.actualizarUsuarioLocal({ ...this.auth.usuarioActual(), nombre: actualizado.nombre, descripcion: actualizado.descripcion });
+        this.guardando.set(false);
+        this.editando.set(false);
+        this.modal.set({ titulo: 'Perfil actualizado', mensaje: 'Tus datos se guardaron correctamente.' });
+      },
+      error: (err) => {
+        this.guardando.set(false);
+        this.modal.set({ titulo: 'No pudimos actualizar tu perfil', mensaje: mensajeDeError(err) });
+      },
+    });
   }
 }

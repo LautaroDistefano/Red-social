@@ -1,11 +1,13 @@
-import { Controller, Get, Param, Post, UseGuards, Delete, UseInterceptors, Body, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards, Delete, UseInterceptors, Body, UploadedFile, Put } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service.js';
 import { AutenticacionService } from '../autenticacion/autenticacion.service.js';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard.js';
+import { JwtAuthGuard, type PayloadJwt } from '../common/guards/jwt-auth.guard.js';
 import { AdminGuard } from '../common/guards/admin.guard.js';
 import { opcionesImagen, subirImagen } from '../common/utils/subida-imagen.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CrearUsuarioDto } from './dto/crear-usuario.dto.js';
+import { EditarPerfilDto } from './dto/editar-perfil.dto.js';
+import { UsuarioActual } from '../common/decorators/usuario-actual.decorator.js';
 
 @Controller('usuarios')
 @UseGuards(JwtAuthGuard)
@@ -42,5 +44,10 @@ export class UsuariosController {
     @UseGuards(AdminGuard)
     habilitar(@Param('id') id: string) {
         return this.usuariosService.cambiarHabilitado(id, true);
+    }
+
+    @Put('perfil')
+    editarPerfil(@Body() dto: EditarPerfilDto, @UsuarioActual() usuario: PayloadJwt) {
+    return this.usuariosService.editarPerfil(usuario.sub, dto);
     }
 }

@@ -67,4 +67,13 @@ export class UsuariosService {
         if (!usuario) throw new NotFoundException('Usuario no encontrado');
         return usuario;
     }
+
+    async editarPerfil(id: string, dto: { nombre: string; descripcion?: string }) {
+        if (!isValidObjectId(id)) throw new NotFoundException('Usuario no encontrado');
+        const usuario = await this.usuarioModel
+            .findByIdAndUpdate(id, { nombre: dto.nombre, descripcion: dto.descripcion ?? '' }, { new: true })
+            .exec();
+        if (!usuario) throw new NotFoundException('Usuario no encontrado');
+        return usuario;
+    }
 }

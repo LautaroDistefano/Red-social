@@ -89,4 +89,8 @@ export class AuthService {
     esAdmin(): boolean {
         return this.usuarioActual()?.perfil === 'administrador';
     }
+
+    actualizarUsuarioLocal(usuario: any) {
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+    }
 }

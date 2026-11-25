@@ -27,4 +27,8 @@ export class UsuariosService {
         return this.http.post<Usuario>(`${API_URL}/usuarios/${id}/habilitar`, {});
     }
 
+    editarPerfil(datos: { nombre: string; descripcion: string }) {
+        return this.http.put<Usuario>(`${API_URL}/usuarios/perfil`, datos);
+    }
+
 }
