@@ -15,17 +15,17 @@ export class ComentariosService {
         @InjectModel(Publicacion.name) private publicacionModel: Model<PublicacionDocument>,
     ) {}
 
-async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
-    await this.verificarPublicacionActiva(publicacionId);
+    async crear(publicacionId: string, usuarioId: string, dto: CrearComentarioDto) {
+        await this.verificarPublicacionActiva(publicacionId);
 
-    const comentario = await this.comentarioModel.create({
-        texto: dto.texto,
-        publicacion: new Types.ObjectId(publicacionId),
-        usuario: new Types.ObjectId(usuarioId),
-    });
+        const comentario = await this.comentarioModel.create({
+            texto: dto.texto,
+            publicacion: new Types.ObjectId(publicacionId),
+            usuario: new Types.ObjectId(usuarioId),
+        });
 
-    return comentario.populate('usuario', CAMPOS_AUTOR);
-}
+        return comentario.populate('usuario', CAMPOS_AUTOR);
+    }
 
     async listar(publicacionId: string, dto: ListarComentariosDto) {
         await this.verificarPublicacionActiva(publicacionId);

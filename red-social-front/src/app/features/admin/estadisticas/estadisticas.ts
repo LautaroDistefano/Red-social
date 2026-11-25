@@ -11,6 +11,13 @@ Chart.defaults.borderColor = 'rgba(255,255,255,0.1)'; //Para las lineas de la gr
 
 const PALETA = ['#c8352e', '#294f5c', '#295c47', '#e0a030', '#7a5240', '#6a4c93', '#2a9d8f', '#e76f51', '#457b9d', '#8d99ae'];
 
+// Toma los colores del tema activo (--texto, --borde) para que los gráficos los sigan
+function aplicarColoresDelTema() {
+  const estilos = getComputedStyle(document.documentElement);
+  Chart.defaults.color = estilos.getPropertyValue('--texto').trim();
+  Chart.defaults.borderColor = estilos.getPropertyValue('--borde').trim();
+}
+
 // Fecha local en formato AAAA-MM-DD (lo que espera el back)
 function fechaISO(d: Date) {
   const mes = String(d.getMonth() + 1).padStart(2, '0');
@@ -40,12 +47,19 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
   private cDias = viewChild.required<ElementRef<HTMLCanvasElement>>('cDias');
   private cPubs = viewChild.required<ElementRef<HTMLCanvasElement>>('cPubs');
   private graficos: Record<string, Chart> = {};
+  private observador?: MutationObserver;
+  private ultimo?: { usuarios: Punto[]; dias: Punto[]; pubs: Punto[] };
 
   ngAfterViewInit() {
     this.consultar();
+    this.observador = new MutationObserver(() => {
+      if (this.ultimo) this.pintar(this.ultimo, false);
+    });
+    this.observador.observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
   }
 
   ngOnDestroy() {
+    this.observador?.disconnect();
     Object.values(this.graficos).forEach((g) => g.destroy());
   }
 
@@ -67,10 +81,8 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
       pubs: this.service.comentariosPorPublicacion(desde, hasta),
     }).subscribe({
       next: (r) => {
-        this.hayDatos.set({ usuarios: r.usuarios.length > 0, dias: r.dias.length > 0, pubs: r.pubs.length > 0 });
-        this.dibujar('usuarios', this.cUsuarios(), this.config('doughnut', r.usuarios, 'Publicaciones'));
-        this.dibujar('dias', this.cDias(), this.config('line', r.dias, 'Comentarios'));
-        this.dibujar('pubs', this.cPubs(), this.config('barH', r.pubs, 'Comentarios'));
+        this.ultimo = r;
+        this.pintar(r);
         this.cargando.set(false);
       },
       error: (err) => {
@@ -99,7 +111,9 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
             label: titulo,
             data: datos.map((d) => d.total),
             backgroundColor: circular ? PALETA : horizontal ? PALETA[0] : 'rgba(200,53,46,0.2)',
-            borderColor: circular ? '#1a1a1a' : PALETA[0], // en la torta, borde del color de la tarjeta
+            borderColor: circular
+              ? getComputedStyle(document.documentElement).getPropertyValue('--superficie').trim()
+              : PALETA[0],
             borderWidth: tipo === 'line' ? 3 : circular ? 2 : 0,
             fill: tipo === 'line',
             tension: 0.3,
@@ -120,9 +134,17 @@ export class AdminEstadisticas implements AfterViewInit, OnDestroy {
     } as ChartConfiguration;
   }
 
-  // Si ya existía el gráfico se destruye, para que no se superpongan al cambiar el rango
-  private dibujar(clave: string, canvas: ElementRef<HTMLCanvasElement>, config: ChartConfiguration) {
+  private pintar(r: { usuarios: Punto[]; dias: Punto[]; pubs: Punto[] }, animar = true) {
+    aplicarColoresDelTema();
+    this.hayDatos.set({ usuarios: r.usuarios.length > 0, dias: r.dias.length > 0, pubs: r.pubs.length > 0 });
+    this.dibujar('usuarios', this.cUsuarios(), this.config('doughnut', r.usuarios, 'Publicaciones'), animar);
+    this.dibujar('dias', this.cDias(), this.config('line', r.dias, 'Comentarios'), animar);
+    this.dibujar('pubs', this.cPubs(), this.config('barH', r.pubs, 'Comentarios'), animar);
+  }
+
+  private dibujar(clave: string, canvas: ElementRef<HTMLCanvasElement>, config: ChartConfiguration, animar = true) {
     this.graficos[clave]?.destroy();
+    if (!animar) config.options = { ...config.options, animation: false };
     this.graficos[clave] = new Chart(canvas.nativeElement, config);
   }
 }

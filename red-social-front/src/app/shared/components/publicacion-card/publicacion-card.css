@@ -9,3 +9,21 @@ h3 { margin: 0; }
 .me-gusta.activo { color: var(--acento); border-color: var(--acento); }
 .detalle .imagen { max-height: none; }
 .detalle h3 { font-size: 1.6rem; }
+.grupo { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;}
+
+.ver-comentarios {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border: 2px solid var(--borde);
+    border-radius: var(--radio-chico);
+    color: var(--texto);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.ver-comentarios:hover { color: var(--acento); border-color: var(--acento); }
+.ver-comentarios svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
