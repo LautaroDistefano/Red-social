@@ -33,7 +33,7 @@ export class Login {
 
     this.authService.login(this.loginForm.getRawValue() as { usuario: string; password: string })
       .subscribe({
-        next: () => this.router.navigate(['/publicaciones']),
+        next: () => this.router.navigate(['/']),
         error: (err) => {
           const msg = err.error?.message;
           this.errorMessage.set(Array.isArray(msg) ? msg.join('. ') : msg || 'Error al iniciar sesión');
