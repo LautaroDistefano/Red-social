@@ -23,7 +23,7 @@ export class SesionService {
         if (!exp || !duracion) return;
 
         const ahora = Date.now();
-        const aviso = exp - duracion / 3;   // cuando queda 1/3 de la vida (si son 15 minutos, se muetra a los 5min)
+        const aviso = exp - (duracion * 2) / 3; //Avisamos pasado el 1er tercio de vida util del token
         const restante = exp - aviso;
 
         this.mensajeAviso.set(`Quedan ${this.formatear(restante)} de sesión. ¿Querés extenderla?`);
