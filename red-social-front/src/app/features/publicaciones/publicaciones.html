@@ -31,7 +31,7 @@
 </form>
 
 <div class="barra">
-    <label for="orden">Ordenar por</label>
+    <label for="orden">Ordenar por </label>
     <select id="orden" [value]="orden()" (change)="cambiarOrden($any($event.target).value)">
         <option value="fecha">Más recientes</option>
         <option value="meGusta">Más me gusta</option>

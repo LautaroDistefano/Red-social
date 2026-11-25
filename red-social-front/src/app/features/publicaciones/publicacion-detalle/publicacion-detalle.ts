@@ -9,6 +9,10 @@ import { mensajeDeError } from '../../../shared/utils/errores';
 import { PublicacionesService } from '../../../core/service/publicaciones.service';
 import { ComentariosService } from '../../../core/service/comentarios.service';
 import { AuthService } from '../../../core/service/authService';
+import { TiempoRelativoPipe } from '../../../shared/pipes/tiempo-relativo-pipe';
+import { ResaltarDirective } from '../../../shared/directives/resaltar';
+import { AutoFocoDirective } from '../../../shared/directives/auto-foco';
+import { ContadorCaracteresDirective } from '../../../shared/directives/contador-caracteres';
 
 interface DatosModal {
   titulo: string;
@@ -19,7 +23,7 @@ interface DatosModal {
 
 @Component({
   selector: 'app-publicacion-detalle',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink, PublicacionCard],
+  imports: [ReactiveFormsModule, RouterLink, PublicacionCard, TiempoRelativoPipe, ResaltarDirective, AutoFocoDirective, ContadorCaracteresDirective],
   templateUrl: './publicacion-detalle.html',
   styleUrl: './publicacion-detalle.css',
 })

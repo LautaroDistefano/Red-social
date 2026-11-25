@@ -45,7 +45,7 @@
                             <p class="comentario">
                                 <strong>{{ c.usuario.nombre }} {{ c.usuario.apellido }}</strong>
                                 @if (c.modificado) { <em class="editado">(editado)</em> }
-                                <br />{{ c.texto }}
+                                <br />{{ c.texto | recortar: 120}}
                             </p>
                         } @empty {
                             <p class="vacio">Sin comentarios todavía.</p>

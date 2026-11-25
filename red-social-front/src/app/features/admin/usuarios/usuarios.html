@@ -88,7 +88,7 @@
         </thead>
         <tbody>
             @for (u of usuarios(); track u._id) {
-            <tr>
+            <tr appResaltar>
                 <td>
                 <div class="quien">
                     <img class="avatar" [src]="u.imagenPerfil || '/avatar-default.png'" alt="Foto" />

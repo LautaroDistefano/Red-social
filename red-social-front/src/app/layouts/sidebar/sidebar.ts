@@ -3,9 +3,10 @@ import { TemaService } from '../../core/service/tema.service';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/authService';
 import { SesionService } from '../../core/service/sesion.service';
+import { InicialesPipe } from '../../shared/pipes/iniciales-pipe';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, InicialesPipe],
   selector: 'app-sidebar',
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',

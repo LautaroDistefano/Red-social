@@ -7,10 +7,14 @@
     </nav>
 
     @if (usuario) {
-        <div class="usuario">
-        <img class="avatar" [src]="usuario.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+    <div class="usuario">
+        @if (usuario.imagenPerfil) {
+        <img class="avatar" [src]="usuario.imagenPerfil" alt="Foto de perfil" />
+        } @else {
+        <div class="avatar iniciales">{{ usuario.nombre | iniciales: usuario.apellido }}</div>
+        }
         <span class="usuario-nombre">{{ usuario.nombre }} {{ usuario.apellido }}</span>
-        </div>
+    </div>
     }
 
     @if (esAdmin) {

@@ -6,6 +6,7 @@ import { mensajeDeError } from '../../../shared/utils/errores';
 import { fechaNoFutura } from '../../../shared/validators/fecha-no-futura';
 import { AuthService } from '../../../core/service/authService';
 import { UsuariosService } from '../../../core/service/usuario.service';
+import { ResaltarDirective } from '../../../shared/directives/resaltar';
 
 interface DatosModal {
   titulo: string;
@@ -15,7 +16,7 @@ interface DatosModal {
 
 @Component({
   selector: 'app-admin-usuarios',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ResaltarDirective],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })

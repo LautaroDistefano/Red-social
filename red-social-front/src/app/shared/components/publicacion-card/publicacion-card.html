@@ -1,6 +1,15 @@
 <article class="card publicacion">
     <header class="cabecera">
-        <img class="avatar" [src]="publicacion().usuario.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
+
+    <!-- Si no tiene imagen de perfil entonces mostramos las iniciales -->
+    @if (publicacion().usuario.imagenPerfil) {
+        <img class="avatar" [src]="publicacion().usuario.imagenPerfil" alt="Foto de perfil" />
+        } @else {
+        <div class="avatar iniciales">
+            {{ publicacion().usuario.nombre | iniciales: publicacion().usuario.apellido }}
+        </div>
+    }
+
         <div class="autor">
         <strong>{{ publicacion().usuario.nombre }} {{ publicacion().usuario.apellido }}</strong>
         <small>&#64;{{ publicacion().usuario.nombreUsuario }} · {{ publicacion().createdAt | date: 'dd/MM/yyyy HH:mm' }}</small>

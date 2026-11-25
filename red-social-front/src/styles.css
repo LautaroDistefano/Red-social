@@ -196,3 +196,6 @@ input[type='file'] { padding: 0.45rem; font-size: 0.9rem; }
     font-size: 0.8rem;
     font-weight: 700;
 }
+
+/* ---------- Sin imagen de perfil ---------- */
+.iniciales { display: flex; align-items: center; justify-content: center; background: var(--primario); color: var(--sobre-primario); font-weight: 800; }

@@ -14,7 +14,7 @@
     <h3 class="subtitulo">Comentarios ({{ total() }})</h3>
 
     <form class="card nuevo" (submit)="$event.preventDefault(); comentar()">
-        <textarea rows="3" maxlength="500" placeholder="Escribí un comentario..." [formControl]="nuevo"></textarea>
+        <textarea [appContadorCaracteres]="500" rows="3" maxlength="500" placeholder="Escribí un comentario..." [formControl]="nuevo" appAutoFoco></textarea>
         @if (nuevo.touched && nuevo.hasError('required')) {
         <small class="error">El comentario no puede estar vacío</small>
         }
@@ -26,13 +26,13 @@
     } @else {
         <div class="lista">
         @for (c of comentarios(); track c._id) {
-            <article class="card comentario">
+            <article class="card comentario" appResaltar>
             <header>
                 <img class="avatar" [src]="c.usuario.imagenPerfil || 'avatar-default.png'" alt="Foto de perfil" />
                 <div class="autor">
                 <strong>{{ c.usuario.nombre }} {{ c.usuario.apellido }}</strong>
                 <small>
-                    &#64;{{ c.usuario.nombreUsuario }} · {{ c.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+                    &#64;{{ c.usuario.nombreUsuario }} · {{ c.createdAt | tiempoRelativo }}
                     @if (c.modificado) { · <em class="editado">editado</em> }
                 </small>
                 </div>
@@ -42,7 +42,7 @@
             </header>
 
             @if (editandoId() === c._id) {
-                <textarea rows="3" maxlength="500" [formControl]="edicion"></textarea>
+                <textarea [appContadorCaracteres]="500" rows="3" maxlength="500" [formControl]="edicion" appAutoFoco></textarea>
                 @if (edicion.touched && edicion.hasError('required')) {
                 <small class="error">El comentario no puede estar vacío</small>
                 }

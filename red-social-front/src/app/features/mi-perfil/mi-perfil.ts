@@ -11,6 +11,7 @@ import { PublicacionesService } from '../../core/service/publicaciones.service';
 import { ComentariosService } from '../../core/service/comentarios.service';
 import { Comentario } from '../../core/models/comentario.model';
 import { RouterLink } from '@angular/router';
+import { RecortarPipe } from '../../shared/pipes/recortar-pipe';
 
 interface DatosModal {
   titulo: string;
@@ -20,7 +21,7 @@ interface DatosModal {
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [DatePipe, PublicacionCard, RouterLink],
+  imports: [DatePipe, PublicacionCard, RouterLink, RecortarPipe],
   templateUrl: './mi-perfil.html',
   styleUrl: './mi-perfil.css',
 })

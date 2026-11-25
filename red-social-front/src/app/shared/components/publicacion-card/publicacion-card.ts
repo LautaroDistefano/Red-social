@@ -2,10 +2,11 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
 import { Publicacion } from '../../../core/models/publicacion.model';
 import { RouterLink } from '@angular/router';
+import { InicialesPipe } from '../../pipes/iniciales-pipe';
 
 @Component({
   selector: 'app-publicacion-card',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, InicialesPipe],
   templateUrl: './publicacion-card.html',
   styleUrl: './publicacion-card.css',
 })
