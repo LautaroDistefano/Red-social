@@ -18,8 +18,10 @@
     }
 
     @if (esAdmin) {
-        <a routerLink="/dashboard/usuarios" routerLinkActive="activo">Ver usuarios</a>
-        <a routerLink="/dashboard/estadisticas" routerLinkActive="activo">Estadísticas</a>
+        <div class="opciones-admin">
+            <a routerLink="/dashboard/usuarios" routerLinkActive="activo">Ver usuarios</a>
+            <a routerLink="/dashboard/estadisticas" routerLinkActive="activo">Estadísticas</a>
+        </div>
     }
 
     <button type="button" class="btn-tema" (click)="tema.alternar()">
